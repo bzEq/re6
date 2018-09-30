@@ -37,7 +37,7 @@ void NFABuilder::Build() {
     Star *star = dynamic_cast<Star *>(re_);
     Char ep(EP);
     NFABuilder(state_allocator_, start_, finish_, &ep).Build();
-    NFABuilder(state_allocator_, start_, finish_, star->op()).Build();
+    NFABuilder(state_allocator_, start_, start_, star->op()).Build();
     break;
   }
   default:

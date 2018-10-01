@@ -23,11 +23,11 @@ public:
   }
 
 private:
-  bool StepMatch(char hd, Slice tail) {
-    if (not start_->jump.count(hd)) {
+  bool StepMatch(char head, Slice tail) {
+    if (not start_->jump.count(head)) {
       return false;
     }
-    std::set<NFAState *> &targets = start_->jump[hd];
+    std::set<NFAState *> &targets = start_->jump[head];
     for (auto t : targets) {
       if (Matcher(t, finish_, tail).Match()) {
         return true;

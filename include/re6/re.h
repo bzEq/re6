@@ -107,6 +107,7 @@ inline std::string RE::to_string(RE *re) {
     result.append(to_string(plus->op()));
     result.append(")");
     result.append("+");
+    break;
   }
   case kStar: {
     Star *star = dynamic_cast<Star *>(re);

@@ -20,13 +20,19 @@ int main() {
   Concat cd(std::make_pair(&c, &d));
   Branch s(std::make_pair(&ab, &cd));
   Star ss(&s);
-  DEFER_LAMBDA(
-      [&ss] { std::cout << RE::to_string(static_cast<RE *>(&ss)) << "\n"; });
+  Plus sp(&s);
+  DEFER_LAMBDA(([&ss, &sp] {
+    std::cout << RE::to_string(static_cast<RE *>(&ss)) << "\n";
+    std::cout << RE::to_string(static_cast<RE *>(&sp)) << "\n";
+  }));
   StateAllocator alloc;
   NFAState start, finish;
   NFABuilder(&alloc, &start, &finish, &ss).Build();
+  NFABuilder(&alloc, &start, &finish, &sp).Build();
+  Slice empty("");
   Slice t("abcdababcdcd");
   assert(Matcher(&start, &finish, t).Match());
+  assert(Matcher(&start, &finish, empty).Match());
   jit::ExecutableBuffer buffer(4);
   assert(buffer.Init());
   return 0;

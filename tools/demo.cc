@@ -1,9 +1,11 @@
 // Copyright (c) 2018 Kai Luo <gluokai@gmail.com>. All rights reserved.
 
+#include "re6/Matcher.h"
 #include "re6/NFA.h"
 #include "re6/NFABuilder.h"
 #include "re6/re.h"
 
+#include <cassert>
 #include <iostream>
 
 int main() {
@@ -20,5 +22,7 @@ int main() {
   StateAllocator alloc;
   NFAState start, finish;
   NFABuilder(&alloc, &start, &finish, &ss).Build();
+  Slice t("abcdababcdcd");
+  assert(Matcher(&start, &finish, t).Match());
   return 0;
 }

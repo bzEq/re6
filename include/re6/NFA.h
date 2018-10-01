@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "re6/slice.h"
+
 #include <map>
 #include <set>
 #include <vector>
@@ -11,8 +13,6 @@ namespace re6 {
 constexpr char EP = -1;
 
 struct NFAState {
-  using state_t = uint64_t;
-
   std::map<char, std::set<NFAState *>> jump;
 
   void AddJump(char c, NFAState *target) {

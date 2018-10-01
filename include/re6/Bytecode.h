@@ -2,4 +2,4 @@
 
 #pragma once
 
-namespace re6::jit {}
+namespace re6::bytecode {}

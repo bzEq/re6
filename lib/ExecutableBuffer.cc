@@ -22,7 +22,7 @@ bool ExecutableBuffer::Write(Slice s) {
   if (point_ + s.size() > size_) {
     return false;
   }
-  memcpy(buffer_, s.data(), s.size());
+  memcpy(buffer_ + point_, s.data(), s.size());
   point_ += s.size();
   return true;
 }

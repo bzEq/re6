@@ -18,7 +18,7 @@ int main() {
   Char d('d');
   Concat ab(std::make_pair(&a, &b));
   Concat cd(std::make_pair(&c, &d));
-  Select s(std::make_pair(&ab, &cd));
+  Branch s(std::make_pair(&ab, &cd));
   Star ss(&s);
   DEFER_LAMBDA(
       [&ss] { std::cout << RE::to_string(static_cast<RE *>(&ss)) << "\n"; });

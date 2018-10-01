@@ -9,7 +9,7 @@ namespace re6 {
 enum REType {
   kChar,
   kConcat,
-  kSelect,
+  kBranch,
   kStar,
   kPlus,
 };
@@ -44,11 +44,11 @@ private:
   std::pair<RE *, RE *> ops_;
 };
 
-class Select : public RE {
+class Branch : public RE {
 public:
-  explicit Select(const std::pair<RE *, RE *> &ops) : ops_(ops) {}
+  explicit Branch(const std::pair<RE *, RE *> &ops) : ops_(ops) {}
 
-  REType GetType() { return kSelect; }
+  REType GetType() { return kBranch; }
 
   std::pair<RE *, RE *> &ops() { return ops_; }
 
@@ -94,11 +94,11 @@ inline std::string RE::to_string(RE *re) {
     result.append(to_string(concat->ops().second));
     break;
   }
-  case kSelect: {
-    Select *select = dynamic_cast<Select *>(re);
-    result.append(to_string(select->ops().first));
+  case kBranch: {
+    Branch *branch = dynamic_cast<Branch *>(re);
+    result.append(to_string(branch->ops().first));
     result.append("|");
-    result.append(to_string(select->ops().second));
+    result.append(to_string(branch->ops().second));
     break;
   }
   case kPlus: {

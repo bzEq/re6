@@ -18,10 +18,10 @@ void NFABuilder::Build() {
     NFABuilder(state_allocator_, middle, finish_, concat->ops().second).Build();
     break;
   }
-  case kSelect: {
-    Select *select = dynamic_cast<Select *>(re_);
-    NFABuilder(state_allocator_, start_, finish_, select->ops().first).Build();
-    NFABuilder(state_allocator_, start_, finish_, select->ops().second).Build();
+  case kBranch: {
+    Branch *branch = dynamic_cast<Branch *>(re_);
+    NFABuilder(state_allocator_, start_, finish_, branch->ops().first).Build();
+    NFABuilder(state_allocator_, start_, finish_, branch->ops().second).Build();
     break;
   }
   case kPlus: {

@@ -13,15 +13,22 @@ void NFABuilder::Build() {
   }
   case REType::kConcat: {
     Concat *concat = dynamic_cast<Concat *>(re_);
-    NFAState *middle = state_allocator_->Create();
-    NFABuilder(state_allocator_, start_, middle, concat->ops().first).Build();
-    NFABuilder(state_allocator_, middle, finish_, concat->ops().second).Build();
+    NFAState *prev = start_;
+    for (size_t i = 0; i < concat->ops().size(); ++i) {
+      NFAState *next = finish_;
+      if (i != concat->ops().size() - 1) {
+        next = state_allocator_->Create();
+      }
+      NFABuilder(state_allocator_, prev, next, concat->ops().at(i)).Build();
+      prev = next;
+    }
     break;
   }
   case REType::kBranch: {
     Branch *branch = dynamic_cast<Branch *>(re_);
-    NFABuilder(state_allocator_, start_, finish_, branch->ops().first).Build();
-    NFABuilder(state_allocator_, start_, finish_, branch->ops().second).Build();
+    for (auto re : branch->ops()) {
+      NFABuilder(state_allocator_, start_, finish_, re).Build();
+    }
     break;
   }
   case REType::kPlus: {

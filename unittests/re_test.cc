@@ -19,9 +19,9 @@ TEST(RETest, Textify) {
   Char b('b');
   Char c('c');
   Char d('d');
-  Concat ab(std::make_pair(&a, &b));
-  Concat cd(std::make_pair(&c, &d));
-  Branch s(std::make_pair(&ab, &cd));
+  Concat ab({&a, &b});
+  Concat cd({&c, &d});
+  Branch s({&ab, &cd});
   Star ss(&s);
   EXPECT_TRUE(RE::to_string(&ss) == "(ab|cd)*");
 }
@@ -31,9 +31,9 @@ TEST(RETest, Textify1) {
   Char b('b');
   Char c('c');
   Char d('d');
-  Concat ab(std::make_pair(&a, &b));
-  Concat cd(std::make_pair(&c, &d));
-  Branch s(std::make_pair(&ab, &cd));
+  Concat ab({&a, &b});
+  Concat cd({&c, &d});
+  Branch s({&ab, &cd});
   Plus sp(&s);
   EXPECT_TRUE(RE::to_string(&sp) == "(ab|cd)+");
 }
@@ -43,9 +43,9 @@ TEST(RETest, Textify2) {
   Char b('b');
   Char c('c');
   Char d('d');
-  Concat ab(std::make_pair(&a, &b));
-  Concat cd(std::make_pair(&c, &d));
-  Branch s(std::make_pair(&ab, &cd));
+  Concat ab({&a, &b});
+  Concat cd({&c, &d});
+  Branch s({&ab, &cd});
   Question sq(&s);
   EXPECT_TRUE(RE::to_string(&sq) == "(ab|cd)?");
 }
@@ -55,9 +55,9 @@ TEST(NFATest, Simple) {
   Char b('b');
   Char c('c');
   Char d('d');
-  Concat ab(std::make_pair(&a, &b));
-  Concat cd(std::make_pair(&c, &d));
-  Branch s(std::make_pair(&ab, &cd));
+  Concat ab({&a, &b});
+  Concat cd({&c, &d});
+  Branch s({&ab, &cd});
   Star ss(&s);
   StateAllocator alloc;
   NFAState start, finish;
@@ -75,9 +75,9 @@ TEST(NFATest, Simple1) {
   Char b('b');
   Char c('c');
   Char d('d');
-  Concat ab(std::make_pair(&a, &b));
-  Concat cd(std::make_pair(&c, &d));
-  Branch s(std::make_pair(&ab, &cd));
+  Concat ab({&a, &b});
+  Concat cd({&c, &d});
+  Branch s({&ab, &cd});
   Question sq(&s);
   StateAllocator alloc;
   NFAState start, finish;
@@ -96,9 +96,9 @@ TEST(NFATest, Simple2) {
   Char *b = re_alloc.Create<Char>('b');
   Char *c = re_alloc.Create<Char>('c');
   Char *d = re_alloc.Create<Char>('d');
-  Concat *ab = re_alloc.Create<Concat>(std::make_pair(a, b));
-  Concat *cd = re_alloc.Create<Concat>(std::make_pair(c, d));
-  Branch *s = re_alloc.Create<Branch>(std::make_pair(ab, cd));
+  Concat *ab = re_alloc.Create<Concat>(std::initializer_list<RE *>({a, b}));
+  Concat *cd = re_alloc.Create<Concat>(std::initializer_list<RE *>({c, d}));
+  Branch *s = re_alloc.Create<Branch>(std::initializer_list<RE *>({ab, cd}));
   Plus *sp = re_alloc.Create<Plus>(s);
   StateAllocator alloc;
   NFAState start, finish;

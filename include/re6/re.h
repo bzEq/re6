@@ -37,26 +37,26 @@ private:
 
 class Concat : public RE {
 public:
-  explicit Concat(const std::pair<RE *, RE *> &ops) : ops_(ops) {}
+  explicit Concat(const std::vector<RE *> &ops) : ops_(ops) {}
 
   REType GetType() { return REType::kConcat; }
 
-  std::pair<RE *, RE *> ops() const { return ops_; }
+  const std::vector<RE *> &ops() const { return ops_; }
 
 private:
-  std::pair<RE *, RE *> ops_;
+  std::vector<RE *> ops_;
 };
 
 class Branch : public RE {
 public:
-  explicit Branch(const std::pair<RE *, RE *> &ops) : ops_(ops) {}
+  explicit Branch(const std::vector<RE *> &ops) : ops_(ops) {}
 
   REType GetType() { return REType::kBranch; }
 
-  std::pair<RE *, RE *> &ops() { return ops_; }
+  const std::vector<RE *> &ops() const { return ops_; }
 
 private:
-  std::pair<RE *, RE *> ops_;
+  std::vector<RE *> ops_;
 };
 
 class Star : public RE {
@@ -107,15 +107,20 @@ inline std::string RE::to_string(RE *re) {
   }
   case REType::kConcat: {
     Concat *concat = dynamic_cast<Concat *>(re);
-    result.append(to_string(concat->ops().first));
-    result.append(to_string(concat->ops().second));
+    for (auto re : concat->ops()) {
+      result.append(to_string(re));
+    }
     break;
   }
   case REType::kBranch: {
     Branch *branch = dynamic_cast<Branch *>(re);
-    result.append(to_string(branch->ops().first));
-    result.append("|");
-    result.append(to_string(branch->ops().second));
+    for (size_t i = 0; i < branch->ops().size(); ++i) {
+      auto re = branch->ops().at(i);
+      result.append(to_string(re));
+      if (i != branch->ops().size() - 1) {
+        result.append("|");
+      }
+    }
     break;
   }
   case REType::kPlus: {

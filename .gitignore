@@ -1,3 +1,5 @@
+bazel-*
+googletest
 out/
 *.a
 *.so

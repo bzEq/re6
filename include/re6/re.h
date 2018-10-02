@@ -19,6 +19,7 @@ class RE {
 public:
   static std::string to_string(RE *re);
   virtual REType GetType() = 0;
+  virtual ~RE() {}
 };
 
 class Char : public RE {

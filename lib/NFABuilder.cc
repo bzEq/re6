@@ -26,11 +26,8 @@ void NFABuilder::Build() {
   }
   case REType::kPlus: {
     Plus *plus = dynamic_cast<Plus *>(re_);
-    NFAState *middle = state_allocator_->Create();
-    Char ep(EP);
     NFABuilder(state_allocator_, start_, finish_, plus->op()).Build();
-    NFABuilder(state_allocator_, start_, middle, &ep).Build();
-    NFABuilder(state_allocator_, middle, start_, plus->op()).Build();
+    NFABuilder(state_allocator_, start_, start_, plus->op()).Build();
     break;
   }
   case REType::kStar: {

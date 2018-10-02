@@ -100,7 +100,9 @@ inline std::string RE::to_string(RE *re) {
   switch (re->GetType()) {
   case REType::kChar: {
     Char *c = dynamic_cast<Char *>(re);
-    result.push_back(c->c());
+    if (c->c() != EP) {
+      result.push_back(c->c());
+    }
     break;
   }
   case REType::kConcat: {

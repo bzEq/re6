@@ -107,4 +107,21 @@ TEST(NFATest, Simple2) {
   EXPECT_TRUE(Matcher(&start, &finish, "abcd").Match());
 }
 
+TEST(NFATest, Simple3) {
+  REAllocator re_alloc;
+  auto re = re_alloc.Create<Branch>(std::initializer_list<RE *>({
+      re_alloc.Create<Char>('a'),
+      re_alloc.Create<Char>('b'),
+      re_alloc.Create<Char>('c'),
+  }));
+  StateAllocator alloc;
+  NFAState start, finish;
+  NFABuilder(&alloc, &start, &finish, re).Build();
+  EXPECT_TRUE(not Matcher(&start, &finish, "").Match());
+  EXPECT_TRUE(Matcher(&start, &finish, "a").Match());
+  EXPECT_TRUE(Matcher(&start, &finish, "b").Match());
+  EXPECT_TRUE(Matcher(&start, &finish, "c").Match());
+  EXPECT_TRUE(not Matcher(&start, &finish, "abc").Match());
+}
+
 } // namespace

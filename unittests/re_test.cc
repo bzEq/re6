@@ -96,9 +96,9 @@ TEST(NFATest, Simple2) {
   Char *b = re_alloc.Create<Char>('b');
   Char *c = re_alloc.Create<Char>('c');
   Char *d = re_alloc.Create<Char>('d');
-  Concat *ab = re_alloc.Create<Concat>(std::initializer_list<RE *>({a, b}));
-  Concat *cd = re_alloc.Create<Concat>(std::initializer_list<RE *>({c, d}));
-  Branch *s = re_alloc.Create<Branch>(std::initializer_list<RE *>({ab, cd}));
+  Concat *ab = re_alloc.Create<Concat>({a, b});
+  Concat *cd = re_alloc.Create<Concat>({c, d});
+  Branch *s = re_alloc.Create<Branch>({ab, cd});
   Plus *sp = re_alloc.Create<Plus>(s);
   StateAllocator alloc;
   NFAState start, finish;
@@ -109,11 +109,11 @@ TEST(NFATest, Simple2) {
 
 TEST(NFATest, Simple3) {
   REAllocator re_alloc;
-  auto re = re_alloc.Create<Branch>(std::initializer_list<RE *>({
+  auto re = re_alloc.Create<Branch>({
       re_alloc.Create<Char>('a'),
       re_alloc.Create<Char>('b'),
       re_alloc.Create<Char>('c'),
-  }));
+  });
   StateAllocator alloc;
   NFAState start, finish;
   NFABuilder(&alloc, &start, &finish, re).Build();

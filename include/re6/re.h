@@ -160,6 +160,13 @@ public:
     return re;
   }
 
+  template <typename T>
+  T *Create(const std::initializer_list<RE *> &list) {
+    T *re = new T(list);
+    alloc_.emplace_back(re);
+    return re;
+  }
+
   ~REAllocator() {
     for (auto re : alloc_) {
       delete re;

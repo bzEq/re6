@@ -62,6 +62,10 @@ TEST(NFATest, Simple) {
   StateAllocator alloc;
   NFAState start, finish;
   NFABuilder(&alloc, &start, &finish, &ss).Build();
+  EXPECT_TRUE(Matcher(&start, &finish, "ab").Match());
+  EXPECT_TRUE(Matcher(&start, &finish, "abab").Match());
+  EXPECT_TRUE(Matcher(&start, &finish, "cd").Match());
+  EXPECT_TRUE(Matcher(&start, &finish, "cdcd").Match());
   EXPECT_TRUE(Matcher(&start, &finish, "abcdababcdcd").Match());
   EXPECT_TRUE(Matcher(&start, &finish, "").Match());
 }
@@ -80,7 +84,9 @@ TEST(NFATest, Simple1) {
   NFABuilder(&alloc, &start, &finish, &sq).Build();
   EXPECT_TRUE(Matcher(&start, &finish, "").Match());
   EXPECT_TRUE(Matcher(&start, &finish, "ab").Match());
+  EXPECT_TRUE(not Matcher(&start, &finish, "abab").Match());
   EXPECT_TRUE(Matcher(&start, &finish, "cd").Match());
+  EXPECT_TRUE(not Matcher(&start, &finish, "cdcd").Match());
   EXPECT_TRUE(not Matcher(&start, &finish, "abcd").Match());
 }
 

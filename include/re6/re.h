@@ -3,6 +3,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace re6 {
 
@@ -142,5 +143,24 @@ inline std::string RE::to_string(RE *re) {
   }
   return result;
 }
+
+class REAllocator {
+public:
+  template <typename T, typename... Args>
+  T *Create(Args &&... args) {
+    T *re = new T(std::forward<Args>(args)...);
+    alloc_.emplace_back(re);
+    return re;
+  }
+
+  ~REAllocator() {
+    for (auto re : alloc_) {
+      delete re;
+    }
+  }
+
+private:
+  std::vector<RE *> alloc_;
+};
 
 } // namespace re6

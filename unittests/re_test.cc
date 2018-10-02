@@ -85,17 +85,18 @@ TEST(NFATest, Simple1) {
 }
 
 TEST(NFATest, Simple2) {
-  Char a('a');
-  Char b('b');
-  Char c('c');
-  Char d('d');
-  Concat ab(std::make_pair(&a, &b));
-  Concat cd(std::make_pair(&c, &d));
-  Branch s(std::make_pair(&ab, &cd));
-  Plus sp(&s);
+  REAllocator re_alloc;
+  Char *a = re_alloc.Create<Char>('a');
+  Char *b = re_alloc.Create<Char>('b');
+  Char *c = re_alloc.Create<Char>('c');
+  Char *d = re_alloc.Create<Char>('d');
+  Concat *ab = re_alloc.Create<Concat>(std::make_pair(a, b));
+  Concat *cd = re_alloc.Create<Concat>(std::make_pair(c, d));
+  Branch *s = re_alloc.Create<Branch>(std::make_pair(ab, cd));
+  Plus *sp = re_alloc.Create<Plus>(s);
   StateAllocator alloc;
   NFAState start, finish;
-  NFABuilder(&alloc, &start, &finish, &sp).Build();
+  NFABuilder(&alloc, &start, &finish, sp).Build();
   EXPECT_TRUE(not Matcher(&start, &finish, "").Match());
   EXPECT_TRUE(Matcher(&start, &finish, "abcd").Match());
 }

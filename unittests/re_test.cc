@@ -1,6 +1,7 @@
 // Copyright (c) 2018 Kai Luo <gluokai@gmail.com>. All rights reserved.
 
 #include "re6/ExecutableBuffer.h"
+#include "re6/IterativeMatcher.h"
 #include "re6/Matcher.h"
 #include "re6/NFA.h"
 #include "re6/NFABuilder.h"
@@ -117,11 +118,11 @@ TEST(NFATest, Simple3) {
   StateAllocator alloc;
   NFAState start, finish;
   NFABuilder(&alloc, &start, &finish, re).Build();
-  EXPECT_TRUE(not Matcher(&start, &finish, "").Match());
-  EXPECT_TRUE(Matcher(&start, &finish, "a").Match());
-  EXPECT_TRUE(Matcher(&start, &finish, "b").Match());
-  EXPECT_TRUE(Matcher(&start, &finish, "c").Match());
-  EXPECT_TRUE(not Matcher(&start, &finish, "abc").Match());
+  EXPECT_TRUE(not IterativeMatcher(&start, &finish, "").Match());
+  EXPECT_TRUE(IterativeMatcher(&start, &finish, "a").Match());
+  EXPECT_TRUE(IterativeMatcher(&start, &finish, "b").Match());
+  EXPECT_TRUE(IterativeMatcher(&start, &finish, "c").Match());
+  EXPECT_TRUE(not IterativeMatcher(&start, &finish, "abc").Match());
 }
 
 } // namespace

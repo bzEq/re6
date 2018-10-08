@@ -8,10 +8,14 @@ bool Matcher::Match() const {
   if (start_ == finish_ && s_.empty()) {
     return true;
   }
-  if (s_.empty()) {
-    return StepMatch(EP, s_);
+  if (not StepMatch(EP, s_)) {
+    if (s_.empty()) {
+      return false;
+    } else {
+      return StepMatch(s_[0], s_.advance());
+    }
   }
-  return StepMatch(s_[0], s_.advance());
+  return true;
 }
 
 bool Matcher::StepMatch(char head, Slice tail) const {

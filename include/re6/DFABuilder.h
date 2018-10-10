@@ -17,6 +17,8 @@ public:
   };
 
 public:
+  static uint64_t EncodeNFASet(const std::set<NFAState *> &nfa_set);
+
   explicit DFABuilder(DFAStateAllocator *alloc, NFAState *start,
                       NFAState *finish)
       : alloc_(alloc), nfa_start_(start), nfa_finish_(finish), result_{} {}
@@ -34,7 +36,6 @@ private:
 private:
   DFAState *GetOrCreateState(const std::set<NFAState *> &nfa_set);
   DFAState *GetOrCreateState(uint64_t hash);
-  uint64_t EncodeNFASet(const std::set<NFAState *> &nfa_set);
 };
 
 } // namespace re6

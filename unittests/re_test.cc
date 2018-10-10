@@ -125,4 +125,41 @@ TEST(NFATest, Simple3) {
   EXPECT_TRUE(not IterativeMatcher(&start, &finish, "abc").Match());
 }
 
+TEST(NFATest, Simple4) {
+  REAllocator re_alloc;
+  Char *a = re_alloc.Create<Char>('a');
+  Char *b = re_alloc.Create<Char>('b');
+  Char *c = re_alloc.Create<Char>('c');
+  Char *d = re_alloc.Create<Char>('d');
+  Concat *ab = re_alloc.Create<Concat>({a, b});
+  Concat *cd = re_alloc.Create<Concat>({c, d});
+  Branch *s = re_alloc.Create<Branch>({ab, cd});
+  Plus *sp = re_alloc.Create<Plus>(s);
+  StateAllocator alloc;
+  NFAState start, finish;
+  NFABuilder(&alloc, &start, &finish, sp).Build();
+  EXPECT_TRUE(not IterativeMatcher(&start, &finish, "").Match());
+  EXPECT_TRUE(IterativeMatcher(&start, &finish, "abcd").Match());
+}
+
+TEST(NFATest, Simple5) {
+  Char a('a');
+  Char b('b');
+  Char c('c');
+  Char d('d');
+  Concat ab({&a, &b});
+  Concat cd({&c, &d});
+  Branch s({&ab, &cd});
+  Question sq(&s);
+  StateAllocator alloc;
+  NFAState start, finish;
+  NFABuilder(&alloc, &start, &finish, &sq).Build();
+  EXPECT_TRUE(IterativeMatcher(&start, &finish, "").Match());
+  EXPECT_TRUE(IterativeMatcher(&start, &finish, "ab").Match());
+  EXPECT_TRUE(not IterativeMatcher(&start, &finish, "abab").Match());
+  EXPECT_TRUE(IterativeMatcher(&start, &finish, "cd").Match());
+  EXPECT_TRUE(not IterativeMatcher(&start, &finish, "cdcd").Match());
+  EXPECT_TRUE(not IterativeMatcher(&start, &finish, "abcd").Match());
+}
+
 } // namespace

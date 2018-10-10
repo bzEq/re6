@@ -1,7 +1,12 @@
 cc_library(
     name='re6',
-    srcs=glob(['lib/*.cc']),
-    hdrs=glob(['lib/*.h', 'include/re6/*.h']),
+    srcs=glob([
+        'lib/*.cc',
+    ]),
+    hdrs=glob([
+        'lib/*.h',
+        'include/re6/*.h',
+    ]),
     copts=[
         '-std=c++17',
         '-Wall',

@@ -2,6 +2,8 @@
 
 #include "re6/NFABuilder.h"
 
+#include <iostream>
+
 namespace re6 {
 
 void NFABuilder::Build() {

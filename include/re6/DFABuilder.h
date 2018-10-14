@@ -14,6 +14,8 @@ public:
   struct Result {
     DFAState *start;
     std::set<DFAState *> finish_set;
+
+    void OutputDotFile(const std::string &filename) const;
   };
 
 public:

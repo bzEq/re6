@@ -1,5 +1,8 @@
 // Copyright (c) 2018 Kai Luo <gluokai@gmail.com>. All rights reserved.
 
+#include "re6/DFA.h"
+#include "re6/DFABuilder.h"
+#include "re6/DFAMatcher.h"
 #include "re6/ExecutableBuffer.h"
 #include "re6/IterativeMatcher.h"
 #include "re6/Matcher.h"
@@ -160,6 +163,31 @@ TEST(NFATest, Simple5) {
   EXPECT_TRUE(IterativeMatcher(&start, &finish, "cd").Match());
   EXPECT_TRUE(not IterativeMatcher(&start, &finish, "cdcd").Match());
   EXPECT_TRUE(not IterativeMatcher(&start, &finish, "abcd").Match());
+}
+
+TEST(DFATest, Simple) {
+  Char a('a');
+  Char b('b');
+  Char c('c');
+  Char d('d');
+  Concat ab({&a, &b});
+  Concat cd({&c, &d});
+  Branch s({&ab, &cd});
+  Question sq(&s);
+  StateAllocator alloc;
+  NFAState start, finish;
+  NFABuilder(&alloc, &start, &finish, &sq).Build();
+  DFAStateAllocator dfa_alloc;
+  DFABuilder builder(&dfa_alloc, &start, &finish);
+  EXPECT_TRUE(start.jump.count(EP));
+  builder.Build();
+  auto result = builder.result();
+  EXPECT_TRUE(DFAMatcher(result, "").Match());
+  EXPECT_TRUE(DFAMatcher(result, "ab").Match());
+  EXPECT_TRUE(not DFAMatcher(result, "abab").Match());
+  EXPECT_TRUE(DFAMatcher(result, "cd").Match());
+  EXPECT_TRUE(not DFAMatcher(result, "cdcd").Match());
+  EXPECT_TRUE(not DFAMatcher(result, "abcd").Match());
 }
 
 } // namespace

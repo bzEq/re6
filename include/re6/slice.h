@@ -1,4 +1,3 @@
-// Copyright (c) 2018 Kai Luo <gluokai@gmail.com>. All rights reserved.
 // Copyright (c) 2011 The LevelDB Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
@@ -12,6 +11,8 @@
 // external synchronization, but if any of the threads may call a
 // non-const method, all threads accessing the same Slice must use
 // external synchronization.
+
+// Copyright (c) 2018 Kai Luo <gluokai@gmail.com>. All rights reserved.
 
 #pragma once
 

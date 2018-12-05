@@ -1,6 +1,7 @@
 // Copyright (c) 2018 Kai Luo <gluokai@gmail.com>. All rights reserved.
 
 #include "re6/Matcher.h"
+#include "re6/re.h"
 
 namespace re6 {
 

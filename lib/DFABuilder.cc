@@ -1,6 +1,7 @@
 // Copyright (c) 2018 Kai Luo <gluokai@gmail.com>. All rights reserved.
 
 #include "re6/DFABuilder.h"
+#include "re6/re.h"
 #include "re6/xxhash.h"
 
 #include <algorithm>

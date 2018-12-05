@@ -10,8 +10,6 @@
 
 namespace re6 {
 
-constexpr char EP = -1;
-
 struct NFAState {
   std::map<char, std::set<NFAState *>> jump;
 

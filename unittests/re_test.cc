@@ -1,5 +1,6 @@
 // Copyright (c) 2018 Kai Luo <gluokai@gmail.com>. All rights reserved.
 
+#include "re6/AwkREParser.h"
 #include "re6/DFA.h"
 #include "re6/DFABuilder.h"
 #include "re6/DFAMatcher.h"
@@ -188,6 +189,13 @@ TEST(DFATest, Simple) {
   EXPECT_TRUE(DFAMatcher(result, "cd").Match());
   EXPECT_TRUE(not DFAMatcher(result, "cdcd").Match());
   EXPECT_TRUE(not DFAMatcher(result, "abcd").Match());
+}
+
+TEST(ParserTest, Basic) {
+  AwkREParser parser("((((ab|cd?))))+|e*|f+*");
+  auto result = parser.Parse();
+  EXPECT_TRUE(result.re);
+  EXPECT_TRUE(RE::to_string(result.re) == "(ab|c(d)?)+|(e)*|((f)+)*");
 }
 
 } // namespace

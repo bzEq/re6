@@ -7,6 +7,7 @@
 
 namespace re6 {
 
+// Support only Awk regex
 enum class REType {
   kChar,
   kConcat,
@@ -22,6 +23,8 @@ public:
   virtual REType GetType() = 0;
   virtual ~RE() {}
 };
+
+constexpr char EP = -1;
 
 class Char : public RE {
 public:

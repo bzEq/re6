@@ -1,6 +1,7 @@
 // Copyright (c) 2018 Kai Luo <gluokai@gmail.com>. All rights reserved.
 
 #include "re6/AwkREParser.h"
+#include "re6/Bytecode.h"
 #include "re6/DFA.h"
 #include "re6/DFABuilder.h"
 #include "re6/DFAMatcher.h"
@@ -196,6 +197,19 @@ TEST(ParserTest, Basic) {
   auto result = parser.Parse();
   EXPECT_TRUE(result.re);
   EXPECT_TRUE(RE::to_string(result.re) == "(ab|c(d)?)+|(e)*|((f)+)*");
+}
+
+TEST(StackOperandTest, Smoke) {
+  bytecode::IntOperand i(16);
+  bytecode::StateOperand so(bytecode::State{});
+}
+
+TEST(InstructionTest, Smoke) {
+  bytecode::IfEOI ifeoi(bytecode::Label{});
+  bytecode::IfEmptyStack ifemptystack(bytecode::Label{});
+  bytecode::IfEq ifeq(0, bytecode::Label{});
+  bytecode::Push push(bytecode::State{});
+  bytecode::Pop pop;
 }
 
 } // namespace
